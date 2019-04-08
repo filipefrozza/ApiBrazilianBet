@@ -16,8 +16,7 @@ var passport = require('passport');
 
 var index = require('./routes/index');
 var perfil = require('./routes/perfil');
-var bolos = require('./routes/bolos');
-var produtos = require('./routes/produtos');
+var times = require('./routes/times');
 var app = express();
 
 mongoose.Promise = global.Promise;
@@ -48,8 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use('/', index);
 app.use('/api/v1/perfil', perfil);
-app.use('/api/v1/bolos', bolos);
-app.use('/api/v1/produtos', produtos);
+app.use('/api/v1/times', times);
 
 var Category = app.resource = restful.model('category', mongoose.Schema({
   cat_name: String,
