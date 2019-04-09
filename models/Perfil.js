@@ -72,7 +72,8 @@ var PerfilSchema = new mongoose.Schema({
     estado: {
         type: String,
         required: true
-    }
+    },
+    time: mongoose.Schema.ObjectId
 });
  
 PerfilSchema.pre('save',  function(next) {

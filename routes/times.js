@@ -33,6 +33,14 @@ router.get('/torcedores', function(req, res, next) {
     });
 });
 
+router.get('/ranking', function(req, res, next) {
+    Time.find({torcedores: {$gt: 0}}).sort({torcedores: -1}).exec(function(err, times){
+        if(err) return next(err);
+        
+        res.json(times);
+    });
+});
+
 /* GET SINGLE TIME BY ID */
 router.get('/:id', function (req, res, next) {
     Time.findById(req.params.id, function (err, post) {
