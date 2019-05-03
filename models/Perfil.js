@@ -65,6 +65,9 @@ var PerfilSchema = new mongoose.Schema({
     telefone: {
         type: String
     },
+    cep: {
+        type: String
+    },
     pais: {
         type: String,
         required: true
@@ -72,6 +75,21 @@ var PerfilSchema = new mongoose.Schema({
     estado: {
         type: String,
         required: true
+    },
+    cidade: {
+        type: String
+    },
+    rua: {
+        type: String
+    },
+    bairro: {
+        type: String
+    },
+    numero: {
+        type: Number
+    },
+    complemento: {
+        type: String
     },
     time: mongoose.Schema.ObjectId
 });
