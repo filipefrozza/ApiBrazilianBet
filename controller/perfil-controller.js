@@ -1,6 +1,8 @@
 var Perfil = require('../models/Perfil');
 var jwt = require('jsonwebtoken');
 var config = require('../config/config');
+var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
  
 function createToken(perfil) {
     return jwt.sign({ id: perfil.id, email: perfil.email }, config.jwtSecret, {
@@ -9,25 +11,44 @@ function createToken(perfil) {
 }
  
 exports.registerPerfil = (req, res) => {
+    if(req.body.c_senha){
+        delete req.body.c_senha;
+    }
+    if(typeof req.body.disabled != undefined){
+        delete req.body.disabled;
+    }
+
+    console.log(req.body);
+
     if (!req.body.usuario || !req.body.senha) {
         return res.status(400).json({ 'msg': 'Você deve mandar o usuário e senha' });
+        console.log("você deve mandar o usuario e a senha");
     }
  
     Perfil.findOne({ usuario: req.body.usuario }, (err, perfil) => {
         if (err) {
             return res.status(400).json({ 'msg': err });
+            console.log(err);
         }
  
         if (perfil) {
             return res.status(400).json({ 'msg': 'O usuário já existe' });
+            console.log("usuario ja existe");
         }
  
         let newPerfil = Perfil(req.body);
         newPerfil.save((err, perfil) => {
             if (err) {
                 return res.status(400).json({ 'msg': err });
+                console.log(err);
             }
-            return res.status(201).json(perfil);
+
+            delete perfil.senha;
+
+            return res.status(201).json({
+                token: createToken(perfil),
+                perfil: perfil
+            });
         });
     });
 };
@@ -47,13 +68,89 @@ exports.loginPerfil = (req, res) => {
         }
  
         perfil.comparePassword(req.body.senha, (err, isMatch) => {
+            delete perfil.senha;
             if (isMatch && !err) {
                 return res.status(200).json({
-                    token: createToken(perfil)
+                    token: createToken(perfil),
+                    perfil: perfil
                 });
             } else {
-                return res.status(400).json({ msg: 'O usuário/senha não bate' });
+                return res.status(400).json({ 'msg': 'O usuário/senha não bate' });
             }
+        });
+    });
+};
+
+exports.forgotPassword = async (req, res) => {
+    if(!req.body.email){
+        return res.status(400).send({'msg': 'Você deve preencher o email'});
+    }
+    
+    async function resultado(status, msg){
+        res.status(status).send({'msg': msg});
+        console.log(status, msg);
+        return res.end();
+    }
+
+    await Perfil.findOne({email: req.body.email}, async (err, perfil) => {
+        if(!perfil) {
+            return res.status(400).send({'msg': 'Não eixste nenhuma conta com esse email'});
+        }
+
+        await bcrypt.genSalt(10, async (err, salt) => {
+            if (err) return next(err);
+    
+            await bcrypt.hash(Math.random()*9999999+'', salt, (err, hash) => {
+                if (err) return console.log(err);
+    
+                perfil.resetPasswordToken = hash;
+                console.log('Token '+hash+'gerado para '+perfil.email);
+                perfil.resetPasswordExpires = Date.now() + 1800000; // 30 minutos
+
+            });
+        });
+        
+        let newPerfil = Perfil(perfil);
+
+        await newPerfil.save((err, perfil) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).send({ 'msg': err });
+            }
+
+            console.log('salvando token para '+perfil.email);
+            
+            
+        });
+
+        var smtpTransport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'frozzateste@gmail.com',
+                pass: '#teste123'
+            }
+        });
+        
+        var mailOptions = {
+            to: perfil.email,
+            from: 'passwordreset@brazilianbet.com',
+            subject: 'Recuperação de senha',
+            text: 'Você está recebendo esse email porque você (ou talvez outra pessoa) solicitou recuperação de senha no site da Brazilian Bet.\n\n' +
+            'Por favor clique no link abaixo ou copie e cole no navegador:\n\n' +
+            'http://localhost:3000/reset/' + perfil.resetPasswordToken + '\n\n' +
+            'Se você não requisitou isso, por favor ignore este email.\n'
+        };
+
+        await smtpTransport.sendMail(mailOptions).then((p) => {
+            if(p.response.substr(0,3) != '250'){
+                console.log(err);
+                return res.status(400).json({'msg': 'Falha ao enviar email'});
+            }else{
+                console.log("enviando email");
+                return res.status(201).json({'msg': 'Um email foi enviado para ' + perfil.email + ' com as instruções de recuperação.'});
+            }
+        }).catch((err) => {
+            console.log(err);
         });
     });
 };

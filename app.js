@@ -13,10 +13,12 @@ var restful = require('node-restful');
 var methodOverride = require('method-override');
 var cors = require('cors');
 var passport = require('passport');
+var nodemailer = require('nodemailer');
 
 var index = require('./routes/index');
 var perfil = require('./routes/perfil');
 var times = require('./routes/times');
+
 var app = express();
 
 mongoose.Promise = global.Promise;

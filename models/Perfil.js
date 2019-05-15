@@ -68,10 +68,10 @@ var PerfilSchema = new mongoose.Schema({
     cep: {
         type: String
     },
-    pais: {
-        type: String,
-        required: true
-    },
+    // pais: {
+    //     type: String,
+    //     required: true
+    // },
     estado: {
         type: String,
         required: true
@@ -86,12 +86,20 @@ var PerfilSchema = new mongoose.Schema({
         type: String
     },
     numero: {
-        type: Number
+        type: String
     },
     complemento: {
         type: String
     },
-    time: mongoose.Schema.ObjectId
+    tipo: {
+        type: String
+    },
+    foto: {
+        type: String
+    },
+    time: mongoose.Schema.ObjectId,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
  
 PerfilSchema.pre('save',  function(next) {
