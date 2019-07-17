@@ -40,16 +40,8 @@ routes.post("/upload", (req, res) => {
 
 routes.post('/forgot', perfilController.forgotPassword);
 
-// app.get('/reset/:token', function(req, res) {
-//     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
-//         if (!user) {
-//         req.flash('error', 'Password reset token is invalid or has expired.');
-//         return res.redirect('/forgot');
-//         }
-//         res.render('reset', {
-//         user: req.user
-//         });
-//     });
-// });
+routes.post('/check-token', perfilController.checkForgotToken);
+
+routes.post('/reset', perfilController.resetForgotPassword);
  
 module.exports = routes;
