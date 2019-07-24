@@ -8,9 +8,11 @@ router.get('/', function(req, res, next) {
 
 router.get('/webhook', function(res, res, nex){
   var shell = require('shelljs');
-  shell.cd('/home/ubuntu/node/ApiBrazilianBet');
-  var result = shell.exec('git pull').code;
-  res.json({result: result==1?'success':'failed'});
+  require('shelljs/global');
+  global.verbose = true;
+  var result = shell.exec('git pull');
+  result += " | "+shell.pwd();
+  res.json({result: result});
 });
 
 module.exports = router;
