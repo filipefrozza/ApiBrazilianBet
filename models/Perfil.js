@@ -97,6 +97,9 @@ var PerfilSchema = new mongoose.Schema({
     foto: {
         type: String
     },
+    descricao: {
+        type: String
+    },
     time: mongoose.Schema.ObjectId,
     resetPasswordToken: String,
     resetPasswordExpires: Date

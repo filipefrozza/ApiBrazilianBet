@@ -22,10 +22,22 @@ routes.get('/', (req, res) => {
 });
  
 routes.post('/register', perfilController.registerPerfil);
+
+routes.put('/edit', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // return res.json({ msg: `${req.user.usuario} você está logado.` });
+    // console.log(req.user);
+    perfilController.editPerfil(req, res);
+});
+
 routes.post('/login', perfilController.loginPerfil);
  
 routes.get('/check', passport.authenticate('jwt', { session: false }), (req, res) => {
-    return res.json({ msg: `${req.user.usuario} você está logado.` });
+    // return res.json({ msg: `${req.user.usuario} você está logado.` });
+    usuario = req.user;
+    usuario.senha = undefined;
+    usuario.resetPasswordExpires = undefined;
+    usuario.resetPasswordToken = undefined;
+    return res.json(usuario);
 });
 
 routes.post("/upload", (req, res) => {

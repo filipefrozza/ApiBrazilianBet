@@ -52,6 +52,56 @@ exports.registerPerfil = (req, res) => {
         });
     });
 };
+
+exports.editPerfil = (req, res) => {
+    if(typeof req.body.disabled != undefined){
+        delete req.body.disabled;
+    }
+
+    // console.log(req.body);
+
+    if (!req.body.senha) {
+        return res.status(400).json({ 'msg': 'Você deve preencher a senha' });
+        console.log("você deve preencher a senha");
+    }
+ 
+    Perfil.findOne({ usuario: req.user.usuario }, (err, perfil) => {
+        if (err) {
+            return res.status(400).json({ 'msg': err });
+            console.log(err);
+        }
+ 
+        if (!perfil) {
+            return res.status(400).json({ 'msg': 'Erro ao atualizar, relogue para tentar novamente' });
+            console.log("usuario ja existe");
+        }
+
+        perfil.comparePassword(req.body.senha, (err, isMatch) => {
+            delete perfil.senha;
+            if (isMatch && !err) {
+                for(attr in req.body){
+                    perfil[attr] = req.body[attr];
+                }
+                console.log(perfil);
+                // let newPerfil = Perfil(req.body);
+                perfil.save((err, perfil) => {
+                    if (err) {
+                        return res.status(400).json({ 'msg': err });
+                        console.log(err);
+                    }
+
+                    delete perfil.senha;
+
+                    return res.status(201).json({
+                        'msg': 'Atualizado com sucesso'
+                    });
+                });
+            } else {
+                return res.status(400).json({ 'msg': 'Senha inválida' });
+            }
+        });
+    });
+};
  
 exports.loginPerfil = (req, res) => {
     if (!req.body.usuario || !req.body.senha) {
@@ -126,7 +176,7 @@ exports.forgotPassword = async (req, res) => {
                         subject: 'Recuperação de senha',
                         text: 'Você está recebendo esse email porque você (ou talvez outra pessoa) solicitou recuperação de senha no site da Brazilian Bet.\n\n' +
                         'Por favor clique no link abaixo ou copie e cole no navegador:\n\n' +
-                        'http://localhost:3000/reset/' + perfil.resetPasswordToken + '\n\n' +
+                        'http://localhost:3000/auth/passwordRecover/' + perfil.resetPasswordToken + '\n\n' +
                         'Se você não requisitou isso, por favor ignore este email.\n'
                     };
             
