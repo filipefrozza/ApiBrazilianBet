@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/webhook', function(res, res, nex){
   var shell = require('shelljs');
-  var result = shell.exec('GIT_WORK_TREE=/home/ubuntu/node/ApiBrazilianBet git pull').code;
+  shell.cd('/home/ubuntu/node/ApiBrazilianBet');
+  var result = shell.exec('git pull').code;
   res.json({result: result==1?'success':'failed'});
 });
 
