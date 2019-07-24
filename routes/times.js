@@ -5,9 +5,9 @@ var Perfil = require('../models/Perfil');
 
 /* GET ALL TIME */
 router.get('/', function (req, res, next) {
-    Time.find(function (err, bolos) {
+    Time.find(function (err, times) {
         if (err) return next(err);
-        res.json(bolos);
+        res.json(times);
     });
 });
 
