@@ -10,8 +10,9 @@ router.get('/webhook', function(res, res, nex){
   var shell = require('shelljs');
   require('shelljs/global');
   global.verbose = true;
+  shell.cd(appRoot);
   var result = shell.exec('git pull');
-  result += " | "+shell.pwd();
+  result += " | "+appRoot;
   res.json({result: result});
 });
 
@@ -19,8 +20,9 @@ router.post('/webhook', function(res, res, nex){
   var shell = require('shelljs');
   require('shelljs/global');
   global.verbose = true;
+  shell.cd(appRoot);
   var result = shell.exec('git pull');
-  result += " | "+shell.pwd();
+  result += " | "+appRoot;
   res.json({result: result});
 });
 

@@ -21,6 +21,9 @@ var times = require('./routes/times');
 
 var app = express();
 
+var path = require('path');
+global.appRoot = path.resolve(__dirname);
+
 mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://localhost/brazilianbet')
