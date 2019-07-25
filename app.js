@@ -21,8 +21,7 @@ var times = require('./routes/times');
 
 var app = express();
 
-var path = require('path');
-global.appRoot = path.resolve(__dirname);
+global.appRoot = require('app-root-path');
 
 mongoose.Promise = global.Promise;
 
