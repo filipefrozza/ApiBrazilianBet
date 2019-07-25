@@ -10,12 +10,11 @@ router.get('/webhook', function(res, res, nex){
   var shell = require('shelljs');
   require('shelljs/global');
   global.verbose = true;
-  var root = appRoot == "/root"?"/bb/node/ApiBrazilianBet":appRoot;
-  shell.cd(root);
+  shell.cd(appRoot.path);
   var result = "node - "+shell.exec('git pull');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
-  result += " | "+root;
+  result += " | "+appRoot.path;
   res.json({result: result});
 });
 
@@ -23,9 +22,12 @@ router.post('/webhook', function(res, res, nex){
   var shell = require('shelljs');
   require('shelljs/global');
   global.verbose = true;
-  shell.cd(appRoot);
-  var result = shell.exec('git pull');
-  result += " | "+appRoot;
+  var root = appRoot == "/root"?"/bb/node/ApiBrazilianBet":appRoot;
+  shell.cd(root);
+  var result = "node - "+shell.exec('git pull');
+  shell.cd('../../react/brazilian-bet');
+  result += " | react - "+shell.exec('git pull');
+  result += " | "+root;
   res.json({result: result});
 });
 
