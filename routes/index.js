@@ -10,7 +10,7 @@ router.get('/webhook', function(res, res, nex){
   var shell = require('shelljs');
   require('shelljs/global');
   global.verbose = true;
-  shell.cd(appRoot);
+  shell.cd(appRoot == "/root"?"/bb/node/ApiBrazilianBet":appRoot);
   var result = "node - "+shell.exec('git pull');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
