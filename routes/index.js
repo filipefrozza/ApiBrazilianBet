@@ -16,7 +16,7 @@ router.get('/webhook', function(res, res, nex){
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
   result += " | "+root;
-  res.json({result: result});
+  res.json({result: root});
 });
 
 router.post('/webhook', function(res, res, nex){
