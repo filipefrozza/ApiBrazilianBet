@@ -11,7 +11,9 @@ router.get('/webhook', function(res, res, nex){
   require('shelljs/global');
   global.verbose = true;
   shell.cd(appRoot);
-  var result = shell.exec('git pull');
+  var result = "node - "+shell.exec('git pull');
+  shell.cd('../../react/brazilian-bet');
+  result += " | react - "+shell.exec('git pull');
   result += " | "+appRoot;
   res.json({result: result});
 });
