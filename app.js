@@ -2,6 +2,7 @@
 //npm init -y
 //npm install express body-parser jsonwebtoken passport passport-jwt mongoose bcrypt cors
 
+global.config = require('./config/config');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -18,6 +19,7 @@ var nodemailer = require('nodemailer');
 var index = require('./routes/index');
 var perfil = require('./routes/perfil');
 var times = require('./routes/times');
+var pagseguro = require('./routes/pagseguro');
 
 var app = express();
 
@@ -52,6 +54,7 @@ app.use(cors());
 app.use('/', index);
 app.use('/api/v1/perfil', perfil);
 app.use('/api/v1/times', times);
+app.use('/api/v1/pagseguro', pagseguro);
 
 var Category = app.resource = restful.model('category', mongoose.Schema({
   cat_name: String,
