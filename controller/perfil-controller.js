@@ -43,7 +43,9 @@ exports.registerPerfil = (req, res) => {
                 console.log(err);
             }
 
-            delete perfil.senha;
+            perfil.senha = undefined;
+            perfil.resetPasswordExpires = undefined;
+            perfil.resetPasswordToken = undefined;
 
             return res.status(201).json({
                 token: createToken(perfil),
@@ -61,6 +63,7 @@ exports.editPerfil = (req, res) => {
     // console.log(req.body);
 
     if (!req.body.senha) {
+        console.log(req.body);
         return res.status(400).json({ 'msg': 'Você deve preencher a senha' });
         console.log("você deve preencher a senha");
     }
@@ -118,7 +121,9 @@ exports.loginPerfil = (req, res) => {
         }
  
         perfil.comparePassword(req.body.senha, (err, isMatch) => {
-            delete perfil.senha;
+            perfil.senha = undefined;
+            perfil.resetPasswordExpires = undefined;
+            perfil.resetPasswordToken = undefined;
             if (isMatch && !err) {
                 return res.status(200).json({
                     token: createToken(perfil),
