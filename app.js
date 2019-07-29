@@ -20,10 +20,13 @@ var index = require('./routes/index');
 var perfil = require('./routes/perfil');
 var times = require('./routes/times');
 var pagseguro = require('./routes/pagseguro');
+var pagarme = require('./routes/pagarme');
 
 var app = express();
 
 global.appRoot = require('app-root-path');
+
+const pagarme = require('pagarme');
 
 mongoose.Promise = global.Promise;
 
@@ -55,6 +58,7 @@ app.use('/', index);
 app.use('/api/v1/perfil', perfil);
 app.use('/api/v1/times', times);
 app.use('/api/v1/pagseguro', pagseguro);
+app.use('/api/v1/pagarme', pagarme);
 
 var Category = app.resource = restful.model('category', mongoose.Schema({
   cat_name: String,
