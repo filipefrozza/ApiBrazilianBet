@@ -12,6 +12,7 @@ router.get('/webhook', function(res, res, nex){
   global.verbose = true;
   shell.cd(appRoot.path);
   var result = "node - "+shell.exec('git pull');
+  shell.exec('npm install');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
   result += " - " + shell.exec('npm run build');
@@ -27,6 +28,7 @@ router.post('/webhook', function(res, res, nex){
   global.verbose = true;
   shell.cd(appRoot.path);
   var result = "node - "+shell.exec('git pull');
+  shell.exec('npm install');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
   result += " - " + shell.exec('npm run build');
