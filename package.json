@@ -24,12 +24,14 @@
     "nodemailer": "^6.1.1",
     "nodemon": "^1.19.1",
     "pagarme": "^4.4.0",
+    "pagseguro-node": "^1.0.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "serve-favicon": "~2.3.2",
     "shelljs": "^0.8.3",
+    "socket.io": "^2.2.0",
     "xml2js": "^0.4.19"
   }
 }

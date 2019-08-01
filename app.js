@@ -25,8 +25,7 @@ var pagarme = require('./routes/pagarme');
 var app = express();
 
 global.appRoot = require('app-root-path');
-
-const pagarme = require('pagarme');
+global.pagarmeAPI = require('pagarme');
 
 mongoose.Promise = global.Promise;
 

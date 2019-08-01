@@ -24,8 +24,6 @@ routes.get('/', (req, res) => {
 routes.post('/register', perfilController.registerPerfil);
 
 routes.put('/edit', passport.authenticate('jwt', { session: false }), (req, res) => {
-    // return res.json({ msg: `${req.user.usuario} você está logado.` });
-    // console.log(req.user);
     perfilController.editPerfil(req, res);
 });
 
