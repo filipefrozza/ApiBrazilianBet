@@ -14,6 +14,9 @@ router.get('/webhook', function(res, res, nex){
   var result = "node - "+shell.exec('git pull');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
+  result += " - " + shell.exec('npm run build');
+  shell.cd('../..');
+  result += " - " + shell.exec('cp .htaccess react/brazilian-bet/build/.htaccess');
   result += " | "+appRoot.path;
   res.json({result: result});
 });
@@ -26,9 +29,9 @@ router.post('/webhook', function(res, res, nex){
   var result = "node - "+shell.exec('git pull');
   shell.cd('../../react/brazilian-bet');
   result += " | react - "+shell.exec('git pull');
-  shell.exec('npm run build');
+  result += " - " + shell.exec('npm run build');
   shell.cd('../..');
-  shell.exec('cp .htaccess react/brazilian-bet/build/.htaccess');
+  result += " - " + shell.exec('cp .htaccess react/brazilian-bet/build/.htaccess');
   result += " | "+appRoot.path;
   res.json({result: result});
 });
