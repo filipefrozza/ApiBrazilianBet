@@ -26,6 +26,7 @@ var app = express();
 
 global.appRoot = require('app-root-path');
 global.pagarmeAPI = require('pagarme');
+global.PagSeguro = require('pagseguro-node');
 
 mongoose.Promise = global.Promise;
 
